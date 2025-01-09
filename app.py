@@ -46,12 +46,12 @@ with gr.Blocks() as scatterplot:
     gr.on(triggers = [inp.submit, btn.click], 
           fn=get_fn, 
           inputs = inp, 
-          outputs = fn_scatter).then(fn=get_dev, 
-                                     inputs=inp, 
-                                     outputs=dev_scatter).then(fn=get_tangent_line, 
-                                                                inputs = [inp, inp_2], 
-                                                                outputs=tl_scatter)
-    gr.on(triggers = [inp_2.submit, btn.click], 
+          outputs = fn_scatter)
+    gr.on(triggers = [inp.submit, btn.click], 
+          fn=get_dev, 
+          inputs = inp, 
+          outputs = dev_scatter)
+    gr.on(triggers = [inp.submit, inp_2.submit, btn.click], 
           fn=get_tangent_line, 
           inputs = [inp, inp_2], 
           outputs=tl_scatter)
