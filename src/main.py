@@ -75,8 +75,10 @@ class Derivative:
 
         return fig
 
+    def get_plots(self): 
+        return self._plot_f(), self._plot_derivative()
+
     def __call__(self):
         
         self._function()
         self._get_derivative()
-        return self._plot_f(), self._plot_derivative()
