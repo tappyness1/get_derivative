@@ -21,13 +21,13 @@ def get_tangent_line(input_1: str, input_2: str):
     tl_fig = dev_obj.draw_tangent_line(int(input_2))
     return tl_fig 
 
-def get_piecewise_fn(input_1: str, input_2: str, input_3: str):
-    piecewise_obj = Piecewise(input_1, input_2, float(input_3))
+def get_piecewise_fn(input_1: str, input_2: str, input_3: str, sign_1: str, sign_2: str):
+    piecewise_obj = Piecewise(input_1, input_2, float(input_3), [sign_1, sign_2])
     f_fig, _ = piecewise_obj.plot()
     return f_fig
 
-def get_piecewise_dev(input_1: str, input_2: str, input_3: str):
-    piecewise_obj = Piecewise(input_1, input_2, float(input_3))
+def get_piecewise_dev(input_1: str, input_2: str, input_3: str, sign_1: str, sign_2: str):
+    piecewise_obj = Piecewise(input_1, input_2, float(input_3), [sign_1, sign_2])
     _, dev_fig = piecewise_obj.plot()
     return dev_fig
 
@@ -75,12 +75,25 @@ piecewise_fn_fig, piecewise_dev_fig = None, None
 with gr.Blocks() as piecewise: 
     with gr.Column():
         with gr.Row():
-            inp_func_1 = gr.Textbox(value = "x**2", 
-                            info = "eg 'np.sqrt(x)'", 
-                            label = "Enter Your Expression here")
-            inp_func_2 = gr.Textbox(value = "x**3", 
-                       info = "e.g. x**3", 
-                       label = "Enter Your Expression here")
+            with gr.Column():
+                inp_func_1 = gr.Textbox(value = "x**2", 
+                                info = "eg 'np.sqrt(x)'", 
+                                label = "Enter Your Expression here")
+                
+                inp_sign_1 = gr.Textbox(value = "<", 
+                                info = "eg <", 
+                                label = "Enter Your Sign Here")
+                
+            with gr.Column():
+
+                inp_func_2 = gr.Textbox(value = "x**3", 
+                        info = "e.g. x**3", 
+                        label = "Enter Your Expression here")
+                
+                inp_sign_2 = gr.Textbox(value = ">=", 
+                            info = "eg >=", 
+                            label = "Enter Your Sign Here")
+                
             inp_point = gr.Textbox(value = "2", 
                        info = "e.g. 2", 
                        label = "Enter where your point will be separating your piecewise function")
@@ -91,14 +104,14 @@ with gr.Blocks() as piecewise:
         piecewise_fn_scatter = gr.Plot(piecewise_fn_fig)
         piecewise_dev_scatter = gr.Plot(piecewise_dev_fig)
 
-    gr.on(triggers = [inp_func_1.submit, inp_func_2.submit, inp_point.submit, btn_3.click], 
+    gr.on(triggers = [inp_func_1.submit, inp_func_2.submit, inp_point.submit, inp_sign_1.submit, inp_sign_2.submit, btn_3.click], 
         fn=get_piecewise_fn, 
-        inputs = [inp_func_1, inp_func_2, inp_point],
+        inputs = [inp_func_1, inp_func_2, inp_point, inp_sign_1, inp_sign_2],
         outputs = piecewise_fn_scatter)
     
-    gr.on(triggers = [inp_func_1.submit, inp_func_2.submit, inp_point.submit, btn_3.click], 
+    gr.on(triggers = [inp_func_1.submit, inp_func_2.submit, inp_point.submit, inp_sign_1.submit, inp_sign_2.submit, btn_3.click], 
         fn=get_piecewise_dev, 
-        inputs = [inp_func_1, inp_func_2, inp_point],
+        inputs = [inp_func_1, inp_func_2, inp_point, inp_sign_1, inp_sign_2],
         outputs = piecewise_dev_scatter)
 
 demo = gr.TabbedInterface([scatterplot, piecewise], ["Single Function", "Piecewise Function"])

@@ -2,14 +2,17 @@ from __future__ import annotations
 from src.main import Derivative
 import numpy as np
 import plotly.express as px
+from varname import nameof
 
 
 class Piecewise():
-    def __init__(self, func_1: str, func_2: str, point: float, start_stop_num: List[int, int, int] = [-10, 10, 200]):
+    def __init__(self, func_1: str, func_2: str, point: float, signs = ["<", ">="], start_stop_num: List[int, int, int] = [-10, 10, 200]):
         start, stop, num = start_stop_num
         x_values = np.linspace(start= start, stop= stop, num = num)
-        left_x_values = x_values[x_values < point]
-        right_x_values = x_values[x_values >= point]
+        left_x_values_range =  f"{nameof(x_values)} {signs[0]} {str(point)}"
+        right_x_values_range =  f"{nameof(x_values)} {signs[1]} {str(point)}"
+        left_x_values = x_values[eval(left_x_values_range)]
+        right_x_values = x_values[eval(right_x_values_range)]
 
         self.left_func = Derivative(expression = func_1)
         self.right_func = Derivative(expression = func_2)
